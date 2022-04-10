@@ -3,13 +3,14 @@ package test
 import (
 	"fmt"
 	. "luago/api"
+	"luago/binchunk"
 	_ "luago/binchunk"
 	"luago/state"
 	"testing"
 )
 
 func TestState1(t *testing.T) {
-	ls := state.New()
+	ls := state.New(12, &binchunk.Prototype{})
 
 	ls.PushBoolean(true)
 	printStack(ls)
@@ -32,7 +33,7 @@ func TestState1(t *testing.T) {
 }
 
 func TestState2(t *testing.T) {
-	ls := state.New()
+	ls := state.New(10, &binchunk.Prototype{})
 	ls.PushInteger(1)
 	ls.PushString("2.0")
 	ls.PushString("3.0")

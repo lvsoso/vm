@@ -1,7 +1,7 @@
 package vm
 
-// Lua虚拟机这里采用了一种叫作偏移二进制码（Offset Binary，也叫作Excess-K）的编码模式。
-// 具体来说，如果把sBx解释成无符号整数时它的值是x，那么解释成有符号整数时它的值就是x-K。
+import "luago/api"
+
 const MAXARG_Bx = 1<<18 - 1       // 262143
 const MAXARG_sBx = MAXARG_Bx >> 1 // 131071
 
@@ -60,4 +60,13 @@ func (self Instruction) BMode() byte {
 
 func (self Instruction) CMode() byte {
 	return opcodes[self.Opcode()].argCMode
+}
+
+func (self Instruction) Execute(vm api.LuaVM) {
+	action := opcodes[self.Opcode()].action
+	if action != nil {
+		action(self, vm)
+	} else {
+		panic(self.OpName())
+	}
 }
